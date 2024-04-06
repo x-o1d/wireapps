@@ -1,5 +1,12 @@
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
+iOS build might fail because the strip_svg.sh script addition for
+react-native-vector-image library hasn't been updated (requires xcode)
+
+Design decisions: 
+
+@react-navigation\native-stack was used as the navigation stack for improved performance
+
 # Getting Started
 
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
