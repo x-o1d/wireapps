@@ -14,12 +14,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ShoppingList from './screens/ShoppingList';
 import ShoppingCart from './screens/ShoppingCart';
 import ProductDetails from './screens/ProductDetails';
-import ProductListHeader from './components/ProductListHeader';
+import ShoppingListHeader from './components/ShoppingListHeader';
 import { useHookstate } from '@hookstate/core';
 import { FilteredProducts, ProductType, Products } from './store';
 
 export type RootStackParamList = {
-  ProductList: undefined;
+  ShoppingList: undefined;
   ShoppingCart: undefined;
   ProductDetails: {
     SKU: number
@@ -56,11 +56,11 @@ function App(): React.JSX.Element {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-          name="ProductList" 
+          name="ShoppingList" 
           component={ShoppingList} 
           options={{
             headerBackVisible: false,
-            header: () => <ProductListHeader />
+            header: () => <ShoppingListHeader />
           }}/>
         <Stack.Screen 
           name="ProductDetails" 

@@ -10,7 +10,7 @@
 
 import 'react-native';
 import React from 'react';
-import ListProduct from '../components/ListProduct';
+import ListProduct from '../components/ShoppingListItem';
 
 import {it, expect} from '@jest/globals';
 

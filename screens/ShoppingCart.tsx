@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {StyleSheet, View, Text, SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
 import { useHookstate } from '@hookstate/core';
 import { Cart } from '../store';
-import CartProduct from '../components/CartProduct';
+import CartListItem from '../components/CartListItem';
 
 function ShoppingCart() {
 
@@ -28,7 +28,7 @@ function ShoppingCart() {
       <FlatList
         style={styles.cartList}
         data={cart.value}
-        renderItem={({item}) => <CartProduct item={item} />}
+        renderItem={({item}) => <CartListItem item={item} />}
         keyExtractor={item => item.id.toString() + item.sizes[item.selectedSize]}/>
       <View style={styles.footer}>
         <View style={styles.total}>

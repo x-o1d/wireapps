@@ -6,9 +6,9 @@ import { RootStackParamList } from '../App';
 import SelectModal from '../components/SelectModal';
 import { Cart, FilteredProducts } from '../store';
 import { useHookstate } from '@hookstate/core';
-import ListProduct from '../components/ListProduct';
+import ShoppingListItem from '../components/ShoppingListItem';
 
-function ProductList({ navigation }: NativeStackScreenProps<RootStackParamList>) {
+function ShoppingList({ navigation }: NativeStackScreenProps<RootStackParamList>) {
 
   const products = useHookstate(FilteredProducts);
   const cart = useHookstate(Cart);
@@ -23,7 +23,7 @@ function ProductList({ navigation }: NativeStackScreenProps<RootStackParamList>)
       <FlatList
         style={[cart.value.length ? styles.productList: {}]}
         data={products.value}
-        renderItem={({item}) => <ListProduct item={item} sizeSelector={selectRef}/>}
+        renderItem={({item}) => <ShoppingListItem item={item} sizeSelector={selectRef}/>}
         keyExtractor={item => item.id.toString()}/>
       {!!cart.value.length && <View style={styles.footer}>
         <TouchableOpacity 
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProductList;
+export default ShoppingList;

@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Cart, ProductType, Products } from "../store";
 import { ImmutableObject, useHookstate } from "@hookstate/core";
 
-function CartProduct(props: {
+function CartListItem(props: {
   item: ImmutableObject<ProductType>
 }) {
 
@@ -132,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CartProduct;
+export default CartListItem;

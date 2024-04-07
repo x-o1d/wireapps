@@ -6,7 +6,7 @@ import VectorImage from 'react-native-vector-image';
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../App";
 
-function ListProduct(props: {
+function ShoppingListItem(props: {
   item: ImmutableObject<ProductType>,
   sizeSelector: any
 }) {
@@ -170,4 +170,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ListProduct;
+export default ShoppingListItem;

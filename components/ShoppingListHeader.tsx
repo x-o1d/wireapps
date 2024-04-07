@@ -7,7 +7,7 @@ import { Cart, FilteredProducts, Products } from "../store";
 import SelectModal from "./SelectModal";
 import { RootStackParamList } from "../App";
 
-function ProductListHeader() {
+function ShoppingListHeader() {
 
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   
@@ -185,4 +185,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ProductListHeader;
+export default ShoppingListHeader;
