@@ -1,5 +1,5 @@
 import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { View, Text, StyleSheet, Modal, TouchableHighlight } from "react-native";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 
 const SelectModal = forwardRef(function SelectModal( props: {
   selectionString: string,
@@ -21,8 +21,9 @@ const SelectModal = forwardRef(function SelectModal( props: {
   }, []);
 
   const onSelect = (index: number) => {
-    setSelected(index);
     changeFunction.current(index);
+    setSelectOptions([]);
+    setShowModal(false);
   }
 
   return (
@@ -31,28 +32,23 @@ const SelectModal = forwardRef(function SelectModal( props: {
         transparent={true}
         visible={showModal}
         onRequestClose={() => {
-
+          setShowModal(false);
         }}>
           <View style={styles.modal}>
             <View style={styles.centered}>
-              <Text>Select {props.selectionString}</Text>
+              <Text style={styles.titleText}>{props.selectionString}:</Text>
               {selectOptions.map((option, index) => {
                 return (
-                  <TouchableHighlight 
+                  <TouchableOpacity 
                     key={index}
                     style={styles.selectArea}
                     onPress={() => onSelect(index)}>
                     <View style={[styles.selectButton, index === selected ? styles.selectActive: null]}>
                       <Text>{option}</Text>
                     </View>
-                  </TouchableHighlight>
+                  </TouchableOpacity>
                 )
               })}
-              <TouchableHighlight onPress={() => setShowModal(false)}>
-                <View>
-                  <Text>Close</Text>
-                </View>
-              </TouchableHighlight>
             </View>
           </View>
       </Modal>
@@ -65,7 +61,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   centered: {
     display: 'flex',
@@ -73,14 +69,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     backgroundColor: '#35b8b1',
-    padding: 10
+    padding: 10,
+    borderRadius: 10,
+    paddingBottom: 15
+  },
+  titleText: {
+    fontSize: 15,
+    color: 'black',
+    paddingBottom: 5
   },
   selectArea: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     width: '100%',
-    margin: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 5
   },
   selectButton: {
     display: 'flex',

@@ -1,4 +1,4 @@
-import { hookstate, State } from '@hookstate/core';
+import { hookstate } from '@hookstate/core';
 
 export interface ProductType {
   SKU: number,
@@ -8,7 +8,7 @@ export interface ProductType {
   colour: string,
   name: string,
   price: {
-    amount: number,
+    amount: string,
     currency: string,
   },
   sizes: string[],
@@ -19,4 +19,5 @@ export interface ProductType {
 }
 
 export const Products = hookstate<ProductType[]>([]);
+export const FilteredProducts = hookstate<ProductType[]>([]);
 export const Cart = hookstate<ProductType[]>([]);

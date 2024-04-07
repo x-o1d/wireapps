@@ -1,21 +1,23 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Cart, ProductType, Products } from "../store";
 import { ImmutableObject, useHookstate } from "@hookstate/core";
-import VectorImage from 'react-native-vector-image';
 
-function Product(props: {
-  item: ImmutableObject<ProductType>,
-  sizeSelector: any
+function CartProduct(props: {
+  item: ImmutableObject<ProductType>
 }) {
 
   const cart = useHookstate(Cart);
-  const products = useHookstate(Products);
 
-  const addToCart = (item: ImmutableObject<ProductType>) => {
+  const removeFromCart = (item: ImmutableObject<ProductType>) => {
     cart.set(p => {
       const itemIndex = p.findIndex(i => (i.SKU === item.SKU && i.selectedSize === item.selectedSize))
-      return [...p, item]
+      if(p[itemIndex].count > 1) {
+        p[itemIndex].count--;
+      } else {
+        p.splice(itemIndex, 1);
+      }
+      return p;
     })
   }
 
@@ -28,34 +30,23 @@ function Product(props: {
         <View>
           <Text style={styles.nameText}>{props.item.name}</Text>
           <Text style={styles.colourText}>Colour: {props.item.colour}</Text>
-          <Text style={styles.priceText}>{props.item.price.amount} {props.item.price.currency}</Text>
+          <Text style={styles.priceText}>Size: {props.item.sizes[props.item.selectedSize]}</Text>
           <Text style={styles.nameText}>{props.item.stockStatus}</Text>
         </View>
       </View>
       <View style={styles.buttons}>
-        <TouchableHighlight onPress={() => {
-          props.sizeSelector.current.show(props.item.sizes, props.item.selectedSize, (value: number) => {
-            products.set(p => {
-              const productIndex = p.findIndex(i => i.SKU === props.item.SKU);
-              p[productIndex].selectedSize = value;
-              return p;
-            })
-          })
-        }}>
-          <View style={styles.cartButton}>
-            <Text style={styles.buttonText}>Size: {props.item.sizes[props.item.selectedSize || 0]}</Text>
+        <TouchableOpacity 
+          onPress={() => removeFromCart(props.item)}
+          accessibilityHint="remove from cart">
+          <View style={[styles.cartButton]}>
+            <Text style={styles.buttonText}>Remove</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => addToCart(props.item)}>
-          <View style={[styles.cartButton, styles.buyButton]}>
-            <Text style={styles.buttonText}>Add to cart</Text>
-          </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         <View style={styles.cartCount}>
-          <VectorImage 
-            style={styles.cartIcon}
-            source={require('./../svgs/cart_black.svg')} />
-          <Text> x 0</Text>
+          <Text>{props.item.price.amount} x {props.item.count}</Text>
+        </View>
+        <View style={styles.cartCount}>
+          <Text accessibilityHint="item price">{(parseFloat(props.item.price.amount) * props.item.count).toFixed(2)} {props.item.price.currency}</Text>
         </View>
       </View>
     </View>
@@ -95,7 +86,7 @@ const styles = StyleSheet.create({
   },
   priceText: {
     width: 170,
-    fontSize: 16,
+    fontSize: 14,
     color: 'black',
     marginBottom: 0
   },
@@ -104,6 +95,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     width: 100
+  },
+  size: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    padding: 5,
+    marginBottom: 5,
   },
   cartButton: {
     display: 'flex',
@@ -134,4 +132,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Product;
+export default CartProduct;
