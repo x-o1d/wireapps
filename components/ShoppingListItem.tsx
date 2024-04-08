@@ -37,9 +37,7 @@ function ShoppingListItem(props: {
       if(itemIndex >= 0) {
         p[itemIndex].count++;
       } else {
-        // item passed down as a prop from the flatlist is Immutable
-        // therefore a copy has to be made for the count to be 
-        // updated
+        // make a copy of the products list item for the cart
         const itemCopy = JSON.parse(JSON.stringify(item));
         itemCopy.count = 1;
         p.push(itemCopy)
@@ -121,7 +119,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'black',
     marginBottom: 0,
-    textDecorationStyle: 'solid'
+    textDecorationLine: 'underline'
   },
   colourText: {
     width: 170,
