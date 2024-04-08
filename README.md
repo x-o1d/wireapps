@@ -55,9 +55,7 @@ This design allows for easier testing by mocking out the show() method as is sho
 # Deploying on an emulator
 
 ```bash
+npm install
 npm start
-
-```bash
-# using npm
 npx react-native run-android
 
