@@ -1,11 +1,8 @@
 /**
- * @format
- * 
  * this test tests the functions of an individual product list item
  *  - renders correctly
  *  - adding to cart works
  *  - change size and adding to cart works
- * 
  */
 
 import 'react-native';
