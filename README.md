@@ -54,8 +54,13 @@ This design allows for easier testing by mocking out the show() method as is sho
 
 # Deploying on an emulator
 
+
 ```bash
 npm install
 npm start
+# start the emulator (sdk path of the ./emulator script can be modified for the environment)
 npx react-native run-android
+
+# run tests
+npm run test
 
