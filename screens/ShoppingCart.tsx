@@ -1,24 +1,30 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {StyleSheet, View, Text, SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
-import { useHookstate } from '@hookstate/core';
-import { Cart } from '../store';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import {useHookstate} from '@hookstate/core';
+import {Cart} from '../store';
 import CartListItem from '../components/CartListItem';
 import QuantityModal from '../components/QuantityModal';
 
 function ShoppingCart() {
-
   const cart = useHookstate(Cart);
   const cartEmpty = !cart.value.length;
 
-  const [ totalCost, setTotalCost] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
   const quantityRef = useRef<any>();
 
   useEffect(() => {
     const cost = cart.value.reduce((a, c) => {
-      return a + (parseFloat(c.price.amount) * c.count)
+      return a + parseFloat(c.price.amount) * c.count;
     }, 0);
     setTotalCost(cost);
-  }, [cart.value])
+  }, [cart.value]);
 
   return (
     <SafeAreaView style={styles.cart}>
@@ -31,15 +37,20 @@ function ShoppingCart() {
       <FlatList
         style={styles.cartList}
         data={cart.value}
-        renderItem={({item}) => <CartListItem item={item} quantitySelector={quantityRef}/>}
-        keyExtractor={item => item.id.toString() + item.sizes[item.selectedSize]}/>
+        renderItem={({item}) => (
+          <CartListItem item={item} quantitySelector={quantityRef} />
+        )}
+        keyExtractor={item =>
+          item.id.toString() + item.sizes[item.selectedSize]
+        }
+      />
       <View style={styles.footer}>
         <View style={styles.total}>
-          <Text 
-            accessibilityHint='total amount'
-            style={styles.totalText}>Total: {totalCost.toFixed(2)} GBP</Text>
+          <Text accessibilityHint="total amount" style={styles.totalText}>
+            Total: {totalCost.toFixed(2)} GBP
+          </Text>
         </View>
-        <TouchableOpacity 
+        <TouchableOpacity
           disabled={cartEmpty}
           style={[styles.checkoutButton, cartEmpty && styles.disabled]}>
           <Text style={styles.checkoutText}>Proceed to checkout</Text>
@@ -52,16 +63,16 @@ function ShoppingCart() {
 const styles = StyleSheet.create({
   cart: {
     position: 'relative',
-    height: '100%'
+    height: '100%',
   },
   cartList: {
-    marginBottom: 100
+    marginBottom: 100,
   },
   emptyCart: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20
+    marginTop: 20,
   },
   footer: {
     position: 'absolute',
@@ -76,27 +87,27 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     width: '100%',
     padding: 10,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   totalText: {
     fontSize: 18,
-    color: 'black'
+    color: 'black',
   },
   checkoutButton: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     backgroundColor: '#35b8b1',
-    padding: 10
+    padding: 10,
   },
   disabled: {
-    backgroundColor: '#777777'
+    backgroundColor: '#777777',
   },
   checkoutText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
 export default ShoppingCart;

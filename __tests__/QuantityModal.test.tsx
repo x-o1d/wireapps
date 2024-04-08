@@ -5,35 +5,31 @@
  */
 
 import 'react-native';
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 
-import {it, expect, jest } from '@jest/globals';
+import {it, expect, jest} from '@jest/globals';
 
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { Button } from 'react-native';
+import {render, screen, fireEvent} from '@testing-library/react-native';
+import {Button} from 'react-native';
 import QuantityModal from '../components/QuantityModal';
 
 const mockCallback = jest.fn();
 
 // this component adds four items directly to global cart state
 const TestComponent = () => {
-
   const quantityRef = useRef<any>();
 
   const showModal = () => {
-    quantityRef.current?.show(2, mockCallback)
-  }
+    quantityRef.current?.show(2, mockCallback);
+  };
 
   return (
     <>
-      <QuantityModal
-        ref={quantityRef}/>
-      <Button
-        title='press'
-        onPress={showModal} />
+      <QuantityModal ref={quantityRef} />
+      <Button title="press" onPress={showModal} />
     </>
-  )
-}
+  );
+};
 
 it('renders correctly', () => {
   render(<TestComponent />);

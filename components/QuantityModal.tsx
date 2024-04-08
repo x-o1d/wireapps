@@ -1,20 +1,19 @@
 /*
  * QuantityModal renders a modal with the current quantity and two arrows
  * to increment and decrement quantity.
- * 
+ *
  * It exposes a show() method in the provided ref object which expects the follwing
  * arguments,
- * 
  * currentQuantity: snumber, initial quantity
  * callback: (value) => {}, callback called when the quantity is changed
- * 
+ *
  * @usage
  * function Screen() {
  *  const quantityRef = useRef();
  *  const [quantity, setQuantity] = useState(0);
  *  return (
- *    <QuantityModal 
- *      ref={selectRef} 
+ *    <QuantityModal
+ *      ref={selectRef}
  *      selectionString="Select a letter" />
  *    <Button onPress={() => {
  *      selectRef.current.show(quantity, (value: number) => {
@@ -23,90 +22,92 @@
  *    }}/>
  *  )
  * }
- * 
+ *
  * @refer __tests__/QuantityModal.test.tsx for a sample implementation
  */
 
-import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
-import VectorImage from "react-native-vector-image";
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import {View, Text, StyleSheet, Modal, TouchableOpacity} from 'react-native';
+import VectorImage from 'react-native-vector-image';
 
 const QuantityModal = forwardRef(function SelectModal({}, ref) {
   const [showModal, setShowModal] = useState(false);
-  const [ quantity, setQuantity ] = useState(1);
+  const [quantity, setQuantity] = useState(1);
   const changeFunction = useRef<Function>(() => {});
-  
-  useImperativeHandle(ref, () => {
-    return {
-      show(quantity: number, onChange: Function) {
-        setQuantity(quantity);
-        changeFunction.current = onChange;
-        setShowModal(true);
-      },
-    };
-  }, []);
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        show(value: number, onChange: Function) {
+          setQuantity(value);
+          changeFunction.current = onChange;
+          setShowModal(true);
+        },
+      };
+    },
+    [],
+  );
 
   const decrementQuantity = () => {
-    if(quantity > 1) {
+    if (quantity > 1) {
       changeFunction.current(quantity - 1);
       setQuantity(q => q - 1);
     }
-  }
+  };
 
   const incrementQuantity = () => {
     changeFunction.current(quantity + 1);
     setQuantity(q => q + 1);
-  }
+  };
 
   const closeModal = () => {
     setShowModal(false);
-  }
+  };
 
   return (
     <Modal
-        animationType="slide"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={() => {
-          setShowModal(false);
-        }}>
-          <View style={styles.modal}>
-            <View style={styles.centered}>
-              <View style={styles.title}>
-                <Text style={styles.titleText}>Quantity:</Text>
-              </View>
-              <View style={styles.quantityRow}>
-                <TouchableOpacity 
-                  style={styles.arrowButton}
-                  onPress={decrementQuantity}
-                  accessibilityHint="decrement arrow">
-                    <VectorImage 
-                      style={styles.arrowIcon}
-                      source={require('./../svgs/left.svg')} />
-                </TouchableOpacity>
-                <Text 
-                  style={styles.quantityText}
-                  accessibilityHint="quantity">
-                    {quantity}
-                </Text>
-                <TouchableOpacity 
-                  style={styles.arrowButton}
-                  onPress={incrementQuantity}
-                  accessibilityHint="increment arrow">
-                    <VectorImage 
-                      style={styles.arrowIcon}
-                      source={require('./../svgs/right.svg')} />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={styles.closeButton}
-                onPress={closeModal}>
-                <Text style={styles.closeText}>Close</Text>
-              </TouchableOpacity>
-            </View>
+      animationType="slide"
+      transparent={true}
+      visible={showModal}
+      onRequestClose={() => {
+        setShowModal(false);
+      }}>
+      <View style={styles.modal}>
+        <View style={styles.centered}>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Quantity:</Text>
           </View>
-      </Modal>
-  )
+          <View style={styles.quantityRow}>
+            <TouchableOpacity
+              style={styles.arrowButton}
+              onPress={decrementQuantity}
+              accessibilityHint="decrement arrow">
+              <VectorImage
+                style={styles.arrowIcon}
+                source={require('./../svgs/left.svg')}
+              />
+            </TouchableOpacity>
+            <Text style={styles.quantityText} accessibilityHint="quantity">
+              {quantity}
+            </Text>
+            <TouchableOpacity
+              style={styles.arrowButton}
+              onPress={incrementQuantity}
+              accessibilityHint="increment arrow">
+              <VectorImage
+                style={styles.arrowIcon}
+                source={require('./../svgs/right.svg')}
+              />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
+            <Text style={styles.closeText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
+  );
 });
 
 const styles = StyleSheet.create({
@@ -129,7 +130,7 @@ const styles = StyleSheet.create({
   title: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   titleText: {
     fontSize: 16,
@@ -140,31 +141,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    width: '60%'
+    width: '60%',
   },
   quantityText: {
     fontSize: 20,
     fontWeight: 'bold',
     color: 'black',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   closeButton: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
-    padding: 5
+    padding: 5,
   },
   closeText: {
     fontSize: 14,
     color: 'black',
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   arrowButton: {
-    padding: 10
+    padding: 10,
   },
   arrowIcon: {
     width: 35,
-    height: 35
+    height: 35,
   },
-})
+});
 export default QuantityModal;

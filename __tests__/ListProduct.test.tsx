@@ -11,9 +11,9 @@ import ListProduct from '../components/ShoppingListItem';
 
 import {it, expect} from '@jest/globals';
 
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { useHookstate } from '@hookstate/core';
-import { FilteredProducts } from '../store';
+import {render, screen, fireEvent} from '@testing-library/react-native';
+import {useHookstate} from '@hookstate/core';
+import {FilteredProducts} from '../store';
 
 // this object emulates the SizeModal behaviour by incrementing the
 // size to the next index when show() is called
@@ -21,10 +21,10 @@ const sizeSelector = {
   current: {
     show(a: string[], b: number, c: Function) {
       // emulate size change to + 1
-      c(b+1);
-    }
-  }
-}
+      c(b + 1);
+    },
+  },
+};
 
 const TestItem = {
   name: 'PUMA show 112',
@@ -38,24 +38,20 @@ const TestItem = {
   count: 0,
   price: {
     amount: '45.00',
-    currency: 'GBP'
+    currency: 'GBP',
   },
   stockStatus: 'IN STOCK',
-  mainImage: 'https://'
-}
+  mainImage: 'https://',
+};
 
-// this component adds an item to the global state 
+// this component adds an item to the global state
 // this is neccesary because size selection directly changes
 // global state
 const TestComponent = () => {
   const products = useHookstate(FilteredProducts);
-  products.set([TestItem])
-  return (
-    <ListProduct 
-      item={products.value[0]}
-      sizeSelector={sizeSelector}/>
-  )
-}
+  products.set([TestItem]);
+  return <ListProduct item={products.value[0]} sizeSelector={sizeSelector} />;
+};
 
 it('renders correctly', () => {
   render(<TestComponent />);
@@ -73,7 +69,7 @@ it('shows the correct cart count after adding to cart', () => {
   render(<TestComponent />);
 
   const cartButton = screen.getByText('Add to cart');
-  
+
   // add item to cart
   fireEvent.press(cartButton);
 
@@ -85,14 +81,14 @@ it('shows the correct cart count after adding to cart', () => {
   fireEvent.press(cartButton);
   //cart count should display 2
   expect(cartCount).toHaveTextContent('x 2');
-})
+});
 
 it('shows the correct cart count after changing size', () => {
   render(<TestComponent />);
 
   const cartButton = screen.getByText('Add to cart');
   const sizeButton = screen.getByText(/^Size:/g);
-  
+
   // add three items to cart
   fireEvent.press(cartButton);
   fireEvent.press(cartButton);
@@ -124,4 +120,4 @@ it('shows the correct cart count after changing size', () => {
   const cartCount3 = screen.getByText(/^x/g);
   //cart count should display 2
   expect(cartCount3).toHaveTextContent('x 1');
-})
+});

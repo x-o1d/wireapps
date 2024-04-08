@@ -1,10 +1,10 @@
 /**
  * @format
- * 
+ *
  * this test tests the functions of the shopping list screen
  *  - renders correctly
  *  - cart count shows correctly when items are added
- * 
+ *
  */
 
 import 'react-native';
@@ -12,64 +12,69 @@ import React from 'react';
 
 import {it, expect} from '@jest/globals';
 
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { useHookstate } from '@hookstate/core';
-import { FilteredProducts } from '../store';
+import {render, screen, fireEvent} from '@testing-library/react-native';
+import {useHookstate} from '@hookstate/core';
+import {FilteredProducts} from '../store';
 import ShoppingList from '../screens/ShoppingList';
 import ShoppingListHeader from '../components/ShoppingListHeader';
 
-const TestItems = [{
-  name: 'PUMA show 112',
-  brandName: 'Puma',
-  SKU: 1230,
-  id: 0,
-  description: 'The iconic retro look of the 112 range',
-  colour: 'black',
-  sizes: ['8', '9', '10', '11'],
-  selectedSize: 0,
-  count: 0,
-  price: {
-    amount: '45.00',
-    currency: 'GBP'
+const TestItems = [
+  {
+    name: 'PUMA show 112',
+    brandName: 'Puma',
+    SKU: 1230,
+    id: 0,
+    description: 'The iconic retro look of the 112 range',
+    colour: 'black',
+    sizes: ['8', '9', '10', '11'],
+    selectedSize: 0,
+    count: 0,
+    price: {
+      amount: '45.00',
+      currency: 'GBP',
+    },
+    stockStatus: 'IN STOCK',
+    mainImage: 'https://',
   },
-  stockStatus: 'IN STOCK',
-  mainImage: 'https://'
-},{
-  name: 'PUMA show 113',
-  brandName: 'Puma',
-  SKU: 1231,
-  id: 1,
-  description: 'The iconic retro look of the 112 range',
-  colour: 'black',
-  sizes: ['8', '9', '10', '11'],
-  selectedSize: 0,
-  count: 0,
-  price: {
-    amount: '50.00',
-    currency: 'GBP'
+  {
+    name: 'PUMA show 113',
+    brandName: 'Puma',
+    SKU: 1231,
+    id: 1,
+    description: 'The iconic retro look of the 112 range',
+    colour: 'black',
+    sizes: ['8', '9', '10', '11'],
+    selectedSize: 0,
+    count: 0,
+    price: {
+      amount: '50.00',
+      currency: 'GBP',
+    },
+    stockStatus: 'IN STOCK',
+    mainImage: 'https://',
   },
-  stockStatus: 'IN STOCK',
-  mainImage: 'https://'
-}]
+];
 
 // this component adds four items directly to global cart state
 const TestComponent = () => {
   const products = useHookstate(FilteredProducts);
-  
+
   // only update state if cart is empty
   // since cart state is maintained globally multiple test cases will
   // trigger multiple additions to the state
-  if(!products.value.length) {
+  if (!products.value.length) {
     products.set(TestItems);
   }
 
   return (
     <>
       <ShoppingListHeader />
-      <ShoppingList />
+      {/* navigation and route props are passed from the navigator,
+       so the TS errors can be safely ignored */}
+      <ShoppingList navigation={undefined} route={undefined} />
     </>
-  )
-}
+  );
+};
 
 it('renders correctly', () => {
   render(<TestComponent />);
@@ -85,7 +90,6 @@ it('renders correctly', () => {
 
   const name2 = screen.getAllByText('PUMA show 113');
   expect(name2).toHaveLength(1);
-
 });
 
 it('updates cart count correctly', () => {

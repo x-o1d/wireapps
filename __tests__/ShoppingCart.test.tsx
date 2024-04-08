@@ -1,10 +1,10 @@
 /**
  * @format
- * 
+ *
  * this test tests the functions of the shopping cart screen
  *  - renders correctly
  *  - removing items from the cart works
- * 
+ *
  */
 
 import 'react-native';
@@ -12,9 +12,9 @@ import React from 'react';
 
 import {it, expect} from '@jest/globals';
 
-import { render, screen, fireEvent } from '@testing-library/react-native';
-import { useHookstate } from '@hookstate/core';
-import { Cart } from '../store';
+import {render, screen, fireEvent} from '@testing-library/react-native';
+import {useHookstate} from '@hookstate/core';
+import {Cart} from '../store';
 import ShoppingCart from '../screens/ShoppingCart';
 
 const TestItem = {
@@ -29,20 +29,20 @@ const TestItem = {
   count: 0,
   price: {
     amount: '45.00',
-    currency: 'GBP'
+    currency: 'GBP',
   },
   stockStatus: 'IN STOCK',
-  mainImage: 'https://'
-}
+  mainImage: 'https://',
+};
 
 // this component adds four items directly to global cart state
 const TestComponent = () => {
   const cart = useHookstate(Cart);
-  
+
   // only update state if cart is empty
   // since cart state is maintained globally multiple test cases will
   // trigger multiple additions to the state
-  if(!cart.value.length) {
+  if (!cart.value.length) {
     // add four items where size and the count of items are incremented
     cart.set(p => {
       new Array(4).fill(1).forEach((_, index) => {
@@ -50,15 +50,13 @@ const TestComponent = () => {
         itemCopy.selectedSize = index;
         itemCopy.count = index + 1;
         p.push(itemCopy);
-      })
+      });
       return p;
     });
   }
 
-  return (
-    <ShoppingCart />
-  )
-}
+  return <ShoppingCart />;
+};
 
 it('renders correctly', () => {
   render(<TestComponent />);
@@ -78,7 +76,7 @@ it('renders correctly', () => {
 
   const totalPrice = screen.getByHintText('total amount');
 
-  expect(totalPrice).toHaveTextContent('Total: 450.00 GBP')
+  expect(totalPrice).toHaveTextContent('Total: 450.00 GBP');
 });
 
 it('removes items from the cart', () => {
@@ -103,5 +101,5 @@ it('removes items from the cart', () => {
   // total cost should be adjusted
   const totalPrice = screen.getByHintText('total amount');
 
-  expect(totalPrice).toHaveTextContent('Total: 360.00 GBP')
-})
+  expect(totalPrice).toHaveTextContent('Total: 360.00 GBP');
+});
