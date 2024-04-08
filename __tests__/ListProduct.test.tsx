@@ -16,7 +16,7 @@ import {it, expect} from '@jest/globals';
 
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import { useHookstate } from '@hookstate/core';
-import { Products } from '../store';
+import { FilteredProducts } from '../store';
 
 // this object emulates the SizeModal behaviour by incrementing the
 // size to the next index when show() is called
@@ -51,7 +51,7 @@ const TestItem = {
 // this is neccesary because size selection directly changes
 // global state
 const TestComponent = () => {
-  const products = useHookstate(Products);
+  const products = useHookstate(FilteredProducts);
   products.set([TestItem])
   return (
     <ListProduct 

@@ -97,7 +97,9 @@ function ShoppingListHeader() {
           <VectorImage 
             style={styles.cartIcon}
             source={require('./../svgs/cart.svg')} />
-          <Text style={styles.cartCount}>
+          <Text 
+            style={styles.cartCount}
+            accessibilityHint="cart count">
             ( {cart.value.reduce((a, c) => {
               return a + c.count;
             }, 0)} )

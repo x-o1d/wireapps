@@ -2,9 +2,11 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Cart, ProductType, Products } from "../store";
 import { ImmutableObject, useHookstate } from "@hookstate/core";
+import VectorImage from "react-native-vector-image";
 
 function CartListItem(props: {
   item: ImmutableObject<ProductType>
+  quantitySelector: any
 }) {
 
   const cart = useHookstate(Cart);
@@ -42,11 +44,37 @@ function CartListItem(props: {
             <Text style={styles.buttonText}>Remove</Text>
           </View>
         </TouchableOpacity>
+        <TouchableOpacity 
+          onPress={() => {
+            props.quantitySelector.current.show(props.item.count, (value: number) => {
+              cart.set(p => {
+                const productIndex = p.findIndex(i => (i.SKU === props.item.SKU) && (i.selectedSize === props.item.selectedSize));
+                p[productIndex].count = value;
+                return p;
+              })
+            })
+          }}
+          accessibilityHint="adjust quantity">
+          <View style={[styles.cartButton]}>
+            <VectorImage
+              style={styles.cartIcon}
+              source={require('./../svgs/cart_black.svg')} />
+            <Text style={styles.buttonText}> x {props.item.count}</Text>
+          </View>
+        </TouchableOpacity>
         <View style={styles.cartCount}>
-          <Text>{props.item.price.amount} x {props.item.count}</Text>
+          <Text 
+            accessibilityHint="individual item prive"
+            style={styles.priceText}>
+            {props.item.price.amount} x {props.item.count}
+          </Text>
         </View>
         <View style={styles.cartCount}>
-          <Text accessibilityHint="item price">{(parseFloat(props.item.price.amount) * props.item.count).toFixed(2)} {props.item.price.currency}</Text>
+          <Text 
+            accessibilityHint="item price"
+            style={styles.priceText}>
+            {(parseFloat(props.item.price.amount) * props.item.count).toFixed(2)} {props.item.price.currency}
+          </Text>
         </View>
       </View>
     </View>
@@ -85,8 +113,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   priceText: {
-    width: 170,
-    fontSize: 14,
+    fontSize: 12,
     color: 'black',
     marginBottom: 0
   },
@@ -127,8 +154,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end'
   },
   cartIcon: {
-    width: 20,
-    height: 20
+    width: 17,
+    height: 17
   },
 });
 

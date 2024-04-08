@@ -1,3 +1,33 @@
+/*
+ * SelectModal renders a modal with the provided select options and calls 
+ * the provided callback function when an option is pressed.
+ * 
+ * It exposes a show() method in the provided ref object which expects the follwing
+ * arguments,
+ * 
+ * selectOptions: string[], string array of options
+ * currentValue: number, current selected index
+ * callback: (value) => {}, callback called when an option is selected
+ * 
+ * @usage
+ * function Screen() {
+ *  const selectRef = useRef();
+ *  const [selected, setSelected] = useState(0);
+ *  return (
+ *    <SelectModal 
+ *      ref={selectRef} 
+ *      selectionString="Select a letter" />
+ *    <Button onPress={() => {
+ *      selectRef.current.show(['a','b','c'], selected, (value: number) => {
+ *        setSelected(value);
+ *      })
+ *    }}/>
+ *  )
+ * }
+ * 
+ * @refer __tests__/SelectModal.test.tsx for a sample implementation
+ */
+
 import React, { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
 
@@ -42,7 +72,8 @@ const SelectModal = forwardRef(function SelectModal( props: {
                   <TouchableOpacity 
                     key={index}
                     style={styles.selectArea}
-                    onPress={() => onSelect(index)}>
+                    onPress={() => onSelect(index)}
+                    accessibilityHint="select option">
                     <View style={[styles.selectButton, index === selected ? styles.selectActive: null]}>
                       <Text>{option}</Text>
                     </View>
@@ -85,7 +116,8 @@ const styles = StyleSheet.create({
     width: '100%',
     marginLeft: 10,
     marginRight: 10,
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 5
   },
   selectButton: {
     display: 'flex',

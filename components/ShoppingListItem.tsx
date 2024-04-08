@@ -58,7 +58,7 @@ function ShoppingListItem(props: {
             <Text style={styles.nameText}>{props.item.name}</Text>
             <Text style={styles.colourText}>Colour: {props.item.colour}</Text>
             <Text style={styles.priceText}>{props.item.price.amount} {props.item.price.currency}</Text>
-            <Text style={styles.nameText}>{props.item.stockStatus}</Text>
+            <Text style={styles.stockText}>{props.item.stockStatus}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -132,6 +132,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
     marginBottom: 0
+  },
+  stockText: {
+    width: 170,
+    fontSize: 12,
+    color: 'black',
+    marginBottom: 0,
   },
   buttons: {
     display: 'flex',

@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {StyleSheet, View, Text, SafeAreaView, FlatList, TouchableOpacity} from 'react-native';
 import { useHookstate } from '@hookstate/core';
 import { Cart } from '../store';
 import CartListItem from '../components/CartListItem';
+import QuantityModal from '../components/QuantityModal';
 
 function ShoppingCart() {
 
@@ -10,6 +11,7 @@ function ShoppingCart() {
   const cartEmpty = !cart.value.length;
 
   const [ totalCost, setTotalCost] = useState(0);
+  const quantityRef = useRef<any>();
 
   useEffect(() => {
     const cost = cart.value.reduce((a, c) => {
@@ -25,10 +27,11 @@ function ShoppingCart() {
           <Text>No items in Cart</Text>
         </View>
       )}
+      <QuantityModal ref={quantityRef} />
       <FlatList
         style={styles.cartList}
         data={cart.value}
-        renderItem={({item}) => <CartListItem item={item} />}
+        renderItem={({item}) => <CartListItem item={item} quantitySelector={quantityRef}/>}
         keyExtractor={item => item.id.toString() + item.sizes[item.selectedSize]}/>
       <View style={styles.footer}>
         <View style={styles.total}>

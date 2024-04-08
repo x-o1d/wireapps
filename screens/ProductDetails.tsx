@@ -7,7 +7,7 @@ import VectorImage from 'react-native-vector-image';
 import { RootStackParamList } from '../App';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-function ProductDetails({ route }: NativeStackScreenProps<RootStackParamList, 'ProductDetails'>) {
+function ProductDetails({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'ProductDetails'>) {
 
   const products = useHookstate(Products);
   const cart = useHookstate(Cart);
@@ -44,6 +44,7 @@ function ProductDetails({ route }: NativeStackScreenProps<RootStackParamList, 'P
       }
       return p;
     })
+    navigation.navigate('ShoppingCart');
   }
 
   return (
